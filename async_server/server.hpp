@@ -24,7 +24,10 @@ private:
                     std::istreambuf_iterator<char>(&m_buffer), 
                     std::istreambuf_iterator<char>() 
                 };
-                std::cout << data << std::endl;
+                std::cout << request_number++ << ": " << data << std::endl;
+                std::string message{"answer"};
+                message += std::to_string(request_number);
+                boost::asio::write(m_socket, boost::asio::buffer( message.c_str(), message.size() ));
                 wait_for_request();
             } else {
                 std::cout << "error: " << ec << std::endl;;
@@ -34,6 +37,7 @@ private:
 private:
     tcp::socket m_socket;
     boost::asio::streambuf m_buffer;
+    int request_number{0};
 };
 
 

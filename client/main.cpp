@@ -13,14 +13,15 @@ int main(int argc, char* argv[])
     tcp::resolver resolver(io_context);
 
     boost::asio::connect(socket, resolver.resolve("127.0.0.1", "25000"));
-    
-    std::string data{"some client data ..."};
-    auto result = boost::asio::write(socket, boost::asio::buffer(data));
-    
-    std::cout << "data sent: " << data.length() << '/' << result << std::endl;
+    for (int i=0; i<3; ++i){
+        std::string data{"some client data ..."};
+        auto result = boost::asio::write(socket, boost::asio::buffer(data));
 
+        std::cout << "data sent: " << data.length() << '/' << result << std::endl;
+    }
     boost::system::error_code ec;
     socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
+    std::cout << ec << std::endl;
     socket.close();
 
     return 0;
